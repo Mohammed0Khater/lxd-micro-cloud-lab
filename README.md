@@ -38,10 +38,76 @@ Ensure LXD is installed and initialized on your Ubuntu host:
 ```bash
 sudo snap install lxd
 sudo lxd init --auto
+```
 
+---
+### 2. Deployment
 
-
+```
 git clone [https://github.com/Mohammed0Khater/lxd-micro-cloud-lab.git](https://github.com/Mohammed0Khater/lxd-micro-cloud-lab.git)
 cd lxd-micro-cloud-lab
 chmod +x deploy_cluster.sh
 ./deploy_cluster.sh
+```
+---
+
+## 🔍 Troubleshooting Log (Root Cause Analysis)
+
+Documented case studies of simulated environment failures.
+
+### **Incident #001: Fragmented Packet Drop (MTU Mismatch)**
+
+Symptom: `web-server` container could `ping` external IPs but failed to complete `apt-get update` (TCP handshake hung).
+
+Diagnostic Steps:
+
+1.Ran `tcpdump -i lxdbr0` on the host to inspect traffic.
+
+2.Observed "ICMP Destination Unreachable (Fragmentation Needed)" packets.
+
+3.Verified container `eth0` MTU (1500) exceeded the tunnel overhead of the host bridge.
+
+Resolution: Adjusted the LXD bridge MTU to 1450 to accommodate encapsulation overhead. Root Cause: Path MTU Discovery (PMTUD) failure in a nested virtual environment.
+
+### **Incident 002: Service Start Failure (Systemd Triage)**
+
+Symptom: Nginx failed to start on the `load-balancer` node after configuration changes.
+
+Diagnostic Steps:
+
+1.Executed `lxc exec load-balancer -- systemctl status nginx`.
+
+2.Analyzed `journalctl -u nginx` inside the container.
+
+3.Found a syntax error in `/etc/nginx/sites-enabled/default` regarding an invalid port binding.
+
+Resolution: Corrected the configuration file and validated with `nginx -t`.
+
+---
+
+## 📊 Maintenance & Cleanup  
+
+To reset the lab environment and delete all nodes to free up resources:
+
+```
+lxc delete load-balancer web-server db-server --force
+```
+## 🎯 Canonical Support Alignment  
+
+This project specifically targets the skills requested in the Cloud Support Engineer job description:
+
+* LXD/LXC: Extensive hands-on usage of Canonical's container manager.
+
+* Networking: Bridge management, MTU tuning, and TCP/IP triage.
+
+* Troubleshooting: Advanced log navigation using journalctl and stack trace analysis.
+
+* Programming: Automation via Bash scripting.
+
+
+
+
+
+
+
+

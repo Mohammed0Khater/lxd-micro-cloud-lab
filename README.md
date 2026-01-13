@@ -19,6 +19,6 @@ Diagnostic Steps:
 2. Ran `lxc monitor` to watch system-level events.  
 3. Used `journalctl -xe` on the host to check for bridge errors.  
   
-Resolution: Identified a mismatch in MTU settings between the container and the physical gateway. Restored MTU to 1500; connectivity restored.  
+Resolution: Identified a mismatch in MTU settings between the container and the physical gateway. Restored MTU to 1500 using `tcpdump`; connectivity restored.  
 ***  
 THE END!

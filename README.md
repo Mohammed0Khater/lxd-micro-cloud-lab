@@ -5,7 +5,7 @@
 ***  
 **Section 2: Engineering Choices:**  
 
-Storage: Why I chose dir is because this was purely for testing and non-production demonstration, as zfs was not available, it would have been more efficient and faster.  
+Storage: Why I chose dir driver is because this was purely for testing and non-production demonstration, as ZFS was not available, it would have been more efficient and faster.  
 Networking: Implementing a managed Bridge (lxdbr0) with custom DHCP ranges.  
 ***    
 **Section 3: Incident Report:**  

@@ -61,11 +61,11 @@ Symptom: `web-server` container could `ping` external IPs but failed to complete
 
 Diagnostic Steps:
 
-1.Ran `tcpdump -i lxdbr0` on the host to inspect traffic.
+1. Ran `tcpdump -i lxdbr0` on the host to inspect traffic.
 
-2.Observed "ICMP Destination Unreachable (Fragmentation Needed)" packets.
+2. Observed "ICMP Destination Unreachable (Fragmentation Needed)" packets.
 
-3.Verified container `eth0` MTU (1500) exceeded the tunnel overhead of the host bridge.
+3. Verified container `eth0` MTU (1500) exceeded the tunnel overhead of the host bridge.
 
 Resolution: Adjusted the LXD bridge MTU to 1450 to accommodate encapsulation overhead. Root Cause: Path MTU Discovery (PMTUD) failure in a nested virtual environment.
 
@@ -75,11 +75,11 @@ Symptom: Nginx failed to start on the `load-balancer` node after configuration c
 
 Diagnostic Steps:
 
-1.Executed `lxc exec load-balancer -- systemctl status nginx`.
+1. Executed `lxc exec load-balancer -- systemctl status nginx`.
 
-2.Analyzed `journalctl -u nginx` inside the container.
+2. Analyzed `journalctl -u nginx` inside the container.
 
-3.Found a syntax error in `/etc/nginx/sites-enabled/default` regarding an invalid port binding.
+3. Found a syntax error in `/etc/nginx/sites-enabled/default` regarding an invalid port binding.
 
 Resolution: Corrected the configuration file and validated with `nginx -t`.
 
